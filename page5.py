@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re
 import json
-import pytz
 import pandas as pd
 import statsmodels.api as sm
 from scipy.signal import savgol_filter
