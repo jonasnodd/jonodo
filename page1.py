@@ -64,12 +64,6 @@ def app():
         # Load the data from the selected sheet with optional row skipping
         dataframe = pd.read_excel(uploaded_file, sheet_name=sheet_name, skiprows=skip_rows)
 
-        # Allow the user to select columns that should not contain strings
-        columns_no_strings = st.multiselect('Select columns without strings', dataframe.columns)
-
-        # Remove rows with strings in the selected columns
-        dataframe = dataframe.dropna(subset=columns_no_strings, how='any', axis=0)
-
         labels = np.array(dataframe.columns)
 
         options = st.multiselect('What do you want to trend?', labels)

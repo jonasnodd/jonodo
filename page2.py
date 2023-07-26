@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import re
 import json
 import pytz
-
 import pandas as pd
+import statsmodels.api as sm
 
 def natural_sort_key(s):
     return tuple(int(part) if re.match(r'^\d+$', part) else part for part in re.split(r'(\d+)', s))
@@ -50,7 +50,7 @@ def app():
             # Step 4: Select the x-axis column using a select box
             x_axis_column = st.selectbox("Select X-axis column", combined_df.columns)
 
-            # Step 5: Plot the data over time
+              # Step 5: Plot the data over time
             fig, ax1 = plt.subplots(figsize=(10, 6))
             ax2 = ax1.twinx()  # Create a secondary y-axis
             first_axis = st.multiselect('primary y-axis', options=combined_df.columns)
@@ -72,7 +72,6 @@ def app():
             ax2.legend(loc="upper right")
             plt.tight_layout()
             st.pyplot(fig)
-
 
 if __name__ == "__main__":
     app()

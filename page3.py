@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def app():
-    st.title("Page 2")
-    st.write("This is the content of Page 2.")
+    st.title("Page 3")
+    st.write("This is the content of Page 3.")
     uploaded_file = st.file_uploader("Choose an Excel file", type=['xlsx'])
 
     if uploaded_file:
