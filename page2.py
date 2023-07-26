@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import re
 import json
 import pandas as pd
-import statsmodels.api as sm
 
 def natural_sort_key(s):
     return tuple(int(part) if re.match(r'^\d+$', part) else part for part in re.split(r'(\d+)', s))

@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import re
 import json
 import pandas as pd
-import statsmodels.api as sm
 from scipy.signal import savgol_filter
 import numpy as np
 
