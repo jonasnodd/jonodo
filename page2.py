@@ -4,9 +4,6 @@ import plotly.graph_objects as go
 import json
 import re
 import numpy as np
-from matplotlib.pyplot import cm
-from dateutil.parser import parse
-import matplotlib.pyplot as plt
 from io import StringIO, BytesIO
 import base64
 
@@ -20,6 +17,9 @@ BATCH_STOP_DEFAULT = 1000
 # Function to create a natural sort key
 def natural_sort_key(s):
     return tuple(int(part) if re.match(r'^\d+$', part) else part for part in re.split(r'(\d+)', s))
+
+def is_tz_naive(dt):
+    return dt.tz is None
 
 # Function to find the indexes of local minima in a list
 def find_local_minima_indexes(input_list):
@@ -37,13 +37,14 @@ def find_local_minima_indexes(input_list):
 
 def load_dataframes_from_files(uploaded_files):
     dfs = []
-    
+    types = [0,0,0]
     for uploaded_file in uploaded_files:
         # Check the file type and read accordingly
         if uploaded_file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
             # XLSX file
             try:
                 df = pd.read_excel(uploaded_file)
+                types[0] = 1
             except Exception as e:
                 st.error(f"Error reading XLSX file {uploaded_file.name}: {e}")
                 continue
@@ -51,8 +52,9 @@ def load_dataframes_from_files(uploaded_files):
             # JSON file
             try:
                 data = json.load(uploaded_file)
+                types[1] = 1
             except Exception as e:
-                st.error(f"Error reading JSON content from file {uploaded_file.name}: {e}")
+                st.error(f"Error reading JSON content from .txt file {uploaded_file.name}: {e}")
                 continue
             # Convert the list of dictionaries to a DataFrame
             df = pd.DataFrame(data)
@@ -60,7 +62,10 @@ def load_dataframes_from_files(uploaded_files):
         # Append the DataFrame to the list
         dfs.append(df)
 
-    return dfs
+    if types[0] + types[1] == 2:
+        st.write('warning: Cannot have both files with .xlsx and .txt format.')
+    else:
+        return dfs
 
 def create_data_over_time_plot(combined_df, x_axis_column, y_axis, df_notime, mean_range, batch_start, batch_stop, batch_column):
     fig = go.Figure()
@@ -112,7 +117,7 @@ def create_all_batches_plot(df_notime, batch_start, batch_stop, batch_column, me
 
 def app():
     st.title("Page 2 - Batch Analysis")
-    st.write('Here you can addmultiple data in a time series and divide it into similar batches')
+    st.write('Here you can add multiple data files in a time series and divide it into similar batches.')
     uploaded_files = st.file_uploader("Choose multiple files", accept_multiple_files=True)
 
     if uploaded_files:
@@ -123,7 +128,12 @@ def app():
             x_axis_column = st.selectbox("Select X-axis column", combined_df.columns)
             combined_df[x_axis_column] = pd.to_datetime(combined_df[x_axis_column])
             combined_df.sort_values(by=x_axis_column, inplace=True)
-            combined_df.reset_index(drop=True,inplace=True)
+            combined_df.reset_index(drop=True,inplace=True) 
+
+            try:
+                combined_df[x_axis_column] = combined_df[x_axis_column].dt.tz_convert('Europe/Oslo')
+            except:
+                st.write('Notice: Timezone not specified')
 
             st.success("DataFrames created and combined successfully!")
             st.dataframe(combined_df)

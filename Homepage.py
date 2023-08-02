@@ -2,11 +2,14 @@ import streamlit as st
 from page1 import app as page1
 from page2 import app as page2
 
-st.title("Homepage")
+st.title("Data Analysis Program")
+st.write('This program is meant to make it possible for employees at GE Healthcare Lindesnes to analyze data from the production t find possible connections, deviations and improvements.')
+st.write('As of 05.08.2023 there are still plenty of possible implementations to be made, but the Clustering module and the Batch Analysis module gives a slight idea of the possibilities of such a program.')
+st.write('**Notes:**')
+st.write('The Clustering module currently only takes 1 file on .xlsx format, while the Batch Analysis module can take multiple files of either .txt or .xlsx format (not both at once). Example format for .txt files and xlsx for Batch Analysis module attached in program folder under the "example"-folder.')
 
 # Define page titles and corresponding functions
 PAGES = {
-    "Home": None,
     "Page 1 - Clustering": page1,
     "Page 2 - Batch Analysis": page2,
 }
@@ -15,10 +18,6 @@ PAGES = {
 def main():
     st.sidebar.title("Navigation")
     selection = st.sidebar.radio("Go to", list(PAGES.keys()))
-
-    if selection != "Home":
-        st.sidebar.markdown('---')
-        st.sidebar.markdown("[Home](.)")
 
     # Run the selected page function
     page = PAGES[selection]
