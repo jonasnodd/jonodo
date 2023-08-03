@@ -3,7 +3,7 @@ from page1 import app as page1
 from page2 import app as page2
 
 
-st.set_page_config("Data Analysis Program")
+st.set_page_config("dataanalyseprogram")
 st.title("Data Analysis Program")
 st.write('This program is meant to make it possible for employees at GE Healthcare Lindesnes to analyze data from the production to find possible connections, deviations and improvements.')
 st.write('As of 05.08.2023 there are still plenty of possible implementations to be made, but the Clustering module and the Batch Analysis module gives a slight idea of the possibilities of such a program.')
