@@ -7,12 +7,6 @@ import numpy as np
 from io import StringIO, BytesIO
 import base64
 
-# Constants
-MEAN_RANGE_MIN = 1
-MEAN_RANGE_MAX = 1000
-DEFAULT_MEAN_RANGE = 1
-BATCH_START_DEFAULT = 100
-BATCH_STOP_DEFAULT = 1000
 
 # Function to create a natural sort key
 def natural_sort_key(s):
@@ -142,10 +136,10 @@ def app():
             y_axis = st.multiselect('Select Y-data to analyze', options=combined_df.columns, default=combined_df.columns[1])
 
             mean_range = st.number_input('Insert mean range (lower values give more sensitivity)', 
-                                         min_value=MEAN_RANGE_MIN, max_value=len(combined_df)//2, value=DEFAULT_MEAN_RANGE)
+                                         min_value=1, max_value=len(combined_df)//2, value=len(combined_df)//4)
 
-            batch_start = st.number_input("Enter batch start", min_value=1,value=BATCH_START_DEFAULT)
-            batch_stop = st.number_input("Enter batch stop", max_value=len(combined_df)-2, value=BATCH_STOP_DEFAULT)
+            batch_start = st.number_input("Enter batch start", min_value=1,value=1)
+            batch_stop = st.number_input("Enter batch stop", max_value=len(combined_df)-2, value=len(combined_df)-2)
             batch_column = st.selectbox('Select Y-data to split into batches', options=y_axis, index=0)
 
             create_data_over_time_plot(combined_df, x_axis_column, y_axis, df_notime, mean_range, batch_start, batch_stop, batch_column)
