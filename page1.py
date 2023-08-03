@@ -134,7 +134,7 @@ def app():
             date_columns = pd.to_datetime(df.select_dtypes(include='datetime').stack(), errors='coerce').unstack().columns
 
             st.sidebar.write("**Column Data Types**")
-            selected_string_columns = st.sidebar.multiselect("Select String columns", options=df.columns, default=list(string_columns))
+            selected_string_columns = st.sidebar.multiselect("Select String columns (like reactor names etc.)", options=df.columns, default=list(string_columns))
             selected_date_columns = st.sidebar.multiselect("Select Date columns", options=df.columns, default=list(date_columns))
 
             df = preprocess_dataframe(df, selected_string_columns, selected_date_columns)
